@@ -1,0 +1,62 @@
+[build-system]
+requires = ["scikit-build-core"]
+build-backend = "scikit_build_core.build"
+
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+[project]
+name = "nvim"
+description = "Vim-fork focused on extensibility and usability"
+readme = "README.md"
+keywords = ["editor"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Build Tools",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX",
+  "Operating System :: Unix",
+  "Operating System :: MacOS",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+version = "0.11.2"
+
+[tool.scikit-build.wheel]
+py-api = "py2.py3"
+
+[project.optional-dependencies]
+dev = ["pytest-cov"]
+
+[[project.authors]]
+name = "Bram Moolenaar"
+email = "Bram@moolenaar.net"
+
+[project.license]
+text = "GPL v3"
+
+[project.urls]
+Homepage = "https://neovim.io/"
+Download = "https://github.com/Freed-Wu/nvim-wheel/releases"
+"Bug Report" = "https://github.com/Freed-Wu/nvim-wheel/issues"
+Source = "https://github.com/Freed-Wu/nvim-wheel"
+
+[tool.cibuildwheel]
+archs = ["all"]
+build = "cp312-*"
+build-frontend = "build[uv]"
+
+[[tool.cibuildwheel.overrides]]
+select = ["*-macosx_*", "*-win*"]
+# AssertionError: uv not found
+before-all = "pip install uv"
+
+# https://github.com/astral-sh/uv/issues/10260
+[[tool.cibuildwheel.overrides]]
+select = ["*-musllinux_s390x", "*-musllinux_ppc64*"]
+build-frontend = "build"
